@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tday <tday@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: atang <atang@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 14:11:49 by atang             #+#    #+#             */
-/*   Updated: 2025/01/13 21:41:04 by tday             ###   ########.fr       */
+/*   Updated: 2025/01/18 17:00:17 by atang            ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
@@ -171,7 +171,7 @@ typedef struct s_pixel
 	unsigned int	avg_colour;
 }				t_pixel;
 
-typedef	struct s_mem
+typedef struct s_mem
 {
 	t_pixel			**pixels;
 	t_ray			**corners;
@@ -241,8 +241,13 @@ typedef struct s_Scene
 int			err_return(const char *message);
 int			err_exit(t_Error error);
 void		warn_err_exit(const char *message, t_Error error);
-int			err_free_exit(t_Error error, struct Object *current, t_Scene *scene);
-int			warn_err_free_exit(const char *message, t_Error error, struct Object *current, t_Scene *scene);
+int			err_free_exit(t_Error error, struct Object *current,
+				t_Scene *scene);
+int			warn_err_free_exit(const char *message, t_Error error,
+				struct Object *current, t_Scene *scene);
+
+// error_utils.c//
+int			is_normalized_vector(t_Vector3 *vector);
 
 // file_check.c //
 int			file_exists(char *filename);
@@ -274,7 +279,7 @@ int			add_object(t_Scene *scene, struct Object *new_object);
 void		free_objects(t_Scene *scene);
 
 // parse_elements.c //
-int			parse_ambient_light(char **line, t_AmbientLight *ambient_light); // For line
+int			parse_ambient_light(char **line, t_AmbientLight *ambient_light);
 int			parse_camera(char **line, t_Camera *camera);
 int			parse_light(char **line, t_Light *light);
 int			parse_position(t_Vector3 *position, char **token);
@@ -292,14 +297,9 @@ int			parse_cylinder(char **line, t_Scene *scene);
 
 // parse_utils.c //
 int			parse_rgb(t_Colour4 *colour, char **line);
-int 		parse_vector3(char **line, t_Vector3 *vec);
+int			parse_vector3(char **line, t_Vector3 *vec);
 int			parse_position(t_Vector3 *position, char **line);
 int			parse_orientation(t_Vector3 *orientation, char **line);
-// --> OG below
-//int			parse_vector3_OG(t_Vector3 *vec); //OG
-//int			parse_rgb_OG(t_Colour *colour, char **token); //OG
-//int			parse_position_OG(t_Vector3 *position, char **token); //OG
-//int			parse_orientation_OG(t_Vector3 *orientation, char **token); //OG
 
 // print_elements.c //
 void		print_ambient_light(t_AmbientLight *ambient);
@@ -314,6 +314,7 @@ void		print_all_objects(const t_Scene *scene);
 
 // print_utils.c //
 int			print_error_and_return(const char *message, const char *token);
+void		print_scene_info(t_Scene *scene);
 
 // utils.c //
 size_t		ft_strlen(const char *s);
@@ -322,6 +323,7 @@ int			get_next_token(char **line, char **token);
 char		*ft_strtok(char **line, const char *delim);
 float		parse_float(char **str);
 int			parse_int(char	**str);
+float		ft_strtof(const char *str, char **endptr);
 
 /* // threads.c //
 void		init_threads(t_ThreadPool *thread_pool);
@@ -334,9 +336,10 @@ int			count_cpu_threads();
 // miscellaneous //
 
 // organise later //
-//bool 		is_in_shadow(t_Scene *scene, t_Vector3 intersection_point, t_Object *ignore_object, t_Vector3 normal);
-bool		is_in_shadow(t_Scene *scene, t_Vector3 intersection_point, t_Object *ignore_object);
-int			resize_window_hook(int width, int height, t_Scene *scene, t_mem *mem);
+bool		is_in_shadow(t_Scene *scene, t_Vector3 intersection_point,
+				t_Object *ignore_object);
+int			resize_window_hook(int width, int height, t_Scene *scene,
+				t_mem *mem);
 int			expose_hook(t_Scene *scene);
 t_Vector3	vector(float x, float y, float z);
 t_Vector3	vect_normalise(t_Vector3 v);
@@ -348,8 +351,9 @@ t_Vector3	vect_multiply_scalar(t_Vector3 v, float scalar);
 float		vect_distance(t_Vector3 a, t_Vector3 b);
 t_Vector3	vect_reflect(t_Vector3 incident, t_Vector3 normal);
 void		calculate_average_colour(t_pixel *pixel); // OLD - PRE-shadow
-//void calculate_average_colour(t_pixel *pixel, t_AmbientLight ambient, t_Scene *scene);
-t_Colour4   apply_ambient_light(t_Colour4 base_colour, t_AmbientLight ambient);
+//void calculate_average_colour(t_pixel *pixel, t_AmbientLight ambient,
+//			t_Scene *scene);
+t_Colour4	apply_ambient_light(t_Colour4 base_colour, t_AmbientLight ambient);
 
 //void		compute_ray_directions(t_Scene *scene);
 void		init_ray(t_Scene *scene, t_ray *ray, int x, int y);
@@ -372,7 +376,8 @@ t_ray		**allocate_corner_array(int width, int height);
 void		init_mem(t_mem *mem, t_Scene *scene);
 void		init_pixel_array(t_mem *mem, t_Scene *scene);
 //bool		check_object_intersection(t_Scene *scene, t_ray *ray);
-bool		check_object_intersection(t_Scene *scene, t_ray *ray, t_Object *ignore_object);
+bool		check_object_intersection(t_Scene *scene, t_ray *ray,
+				t_Object *ignore_object);
 void		render_scene(t_mem *mem, t_Scene *scene);
 void		check_mid_intersections(t_mem *mem, t_Scene *scene);
 void		average_pixel_colours(t_mem *mem, t_Scene *scene);

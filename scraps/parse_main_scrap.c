@@ -257,3 +257,63 @@ int	parse_rt_file(const char *filename, t_Scene *scene)
 	return (result);
 }
 */
+
+/*
+-> OG parse_object and parse_line PRE NORM
+
+static int	parse_object( const char *token, char **line, t_Scene *scene)
+{
+	if (scene->object_count >= MAX_OBJECTS)
+	{
+		printf("Error\nExceeded maximum number of objects\n");
+		return (FAILURE);
+	}
+	if (ft_strcmp(token, "sp") == 0)
+		return (parse_sphere(line, scene));
+	else if (ft_strcmp(token, "pl") == 0)
+		return (parse_plane(line, scene));
+	else if (ft_strcmp(token, "cy") == 0)
+		return (parse_cylinder(line, scene));
+	return (FAILURE);
+}
+
+int	parse_line(char *line, t_Scene *scene)
+{
+	char	*token;
+
+	token = ft_strtok(&line, " \t\n");
+	if (!token)
+		return (SUCCESS);
+	printf(C "\nParsing line with token: %s\n" RST, token);
+	if (ft_strcmp(token, "A") == 0)
+	{
+		if (check_multiple_definitions(token, &scene->ambient_light_parsed,
+				10) == FAILURE)
+			return (FAILURE);
+		return (parse_ambient_light(&line, &scene->ambient_light));
+	}
+	else if (ft_strcmp(token, "C") == 0)
+	{
+		if (check_multiple_definitions(token, &scene->camera_parsed, 11)
+			== FAILURE)
+			return (FAILURE);
+		return (parse_camera(&line, &scene->camera));
+	}
+	else if (ft_strcmp(token, "L") == 0)
+	{
+		if (check_multiple_definitions(token, &scene->light_parsed, 12)
+			== FAILURE)
+			return (FAILURE);
+		return (parse_light(&line, &scene->light));
+	}
+	else if (ft_strcmp(token, "sp") == 0 || ft_strcmp(token, "pl") == 0
+		|| ft_strcmp(token, "cy") == 0)
+		return (parse_object(token, &line, scene));
+	else
+	{
+		printf(RED "Error\nUnknown identifier: %s\n\n" RST, token);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+*/

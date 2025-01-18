@@ -991,3 +991,23 @@ int parse_orientation(t_Vector3 *orientation, char **line)
     return (SUCCESS);
 }
 */
+
+
+/*
+-> OLD validate_rgb - didn't handle trailing whitespace for tokens
+static int	validate_rgb(char *token)
+{
+	int	i;
+
+	i = 0;
+	if (token[i] == '-')
+		i++;
+	while (token[i] != '\0')
+	{
+		if (!ft_isdigit((unsigned char)token[i]))
+			return (FAILURE);
+		i++;
+	}
+	return (SUCCESS);
+}
+*/

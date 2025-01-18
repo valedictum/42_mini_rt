@@ -58,3 +58,9 @@ int	warn_err_free_exit(const char *message, t_Error error,
 		free_scene_objects_and_count(scene);
 	exit(1);
 }
+
+int	is_normalized_vector(t_Vector3 *vector)
+{
+	return ((vector->x >= -1 && vector->x <= 1) && (vector->y >= -1
+			&& vector->y <= 1) && (vector->z >= -1 && vector->z <= 1));
+}

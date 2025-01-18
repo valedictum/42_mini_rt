@@ -35,3 +35,17 @@ void	print_objects_in_scene(struct Object *objects)
 		temp = temp->next;
 	}
 }
+
+void	print_scene_info(t_Scene *scene)
+{
+	printf(M "---> PRINTING ELEMENTS AND OBJECTS <---\n\n" RST);
+	printf(G "Entering" RST " print_ambient_light(), print_camera(), and \
+print_light()\n");
+	print_ambient_light(&scene->ambient_light);
+	print_camera(&scene->camera);
+	print_light(&scene->light);
+	printf(RED "\nExiting" RST " print_ambient_light(), print_camera(), \
+and print_light()\n\n");
+	printf("---------------------------------------------------------------\n");
+	print_all_objects(scene);
+}
